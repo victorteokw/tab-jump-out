@@ -49,6 +49,7 @@
          (keys (this-single-command-keys)))
     (key-binding keys t)))
 
+;;;###autoload
 (defun tab-jump-out (arg)
   "Use tab to jump out."
   (interactive "P")
@@ -62,6 +63,7 @@
     map)
   "Keymap for `tab-jump-out-mode'.")
 
+;;;###autoload
 (define-minor-mode tab-jump-out-mode
   "A minor mode that allows you to jump out with tab."
   :keymap tab-jump-out-mode-map)
