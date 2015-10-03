@@ -1,3 +1,22 @@
 * Tab jump out
 
 Use tab to jump out quotes and parenthesis.
+
+** Installation
+
+Install from melpa.
+
+** Usage
+
+*** Normal usage
+
+(tab-jump-out-mode)
+
+*** With yasnippet
+
+If you are using yasnippet, do not enable tab-jump-out-mode, let it
+naturally fallback.
+
+#+begin_src
+(setq yas-fallback-behavior '(apply tab-jump-out 1))
+#+end_src

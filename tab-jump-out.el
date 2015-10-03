@@ -43,17 +43,43 @@
 
 (defun tab-jump-out-original-keybinding ()
   "Get current keys' binding as if `tab-jump-out-' didn't exist."
-  ;; Copied from yasnippet, didn't handle
-  ;; yas--fallback-translate-input yet.
+  ;; Copied from yasnippet
   (let* ((tab-jump-out-mode nil)
          (keys (this-single-command-keys)))
-    (key-binding keys t)))
+    (or (key-binding keys t)
+        (key-binding (tab-jump-out--fallback-translate-input keys) t))))
+
+(defun tab-jump-out--fallback-translate-input (keys)
+  "Emulate `read-key-sequence', at least what I think it does.
+
+Keys should be an untranslated key vector.  Returns a translated
+vector of keys.  FIXME not thoroughly tested."
+  ;; Copied from yasnippet
+  (let ((retval [])
+        (i 0))
+    (while (< i (length keys))
+      (let ((j i)
+            (translated local-function-key-map))
+        (while (and (< j (length keys))
+                    translated
+                    (keymapp translated))
+          (setq translated (cdr (assoc (aref keys j) (remove 'keymap translated)))
+                j (1+ j)))
+        (setq retval (vconcat retval (cond ((symbolp translated)
+                                            `[,translated])
+                                           ((vectorp translated)
+                                            translated)
+                                           (t
+                                            (substring keys i j)))))
+        (setq i j)))
+    retval))
 
 ;;;###autoload
 (defun tab-jump-out (arg)
   "Use tab to jump out."
   (interactive "P")
-  (if (-contains? tab-jump-out-delimiters (char-to-string (char-after)))
+  (if (and (char-after)
+           (-contains? tab-jump-out-delimiters (char-to-string (char-after))))
       (forward-char arg)
     (tab-jump-out-fallback)))
 
