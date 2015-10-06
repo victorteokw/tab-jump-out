@@ -1,4 +1,4 @@
-;;; tab-jump-out.el --- Use tab to jump out
+;;; tab-jump-out.el --- Use tab to jump out of delimiter pairs.
 
 ;; Copyright (C) 2015 Zhang Kai Yu
 
@@ -21,7 +21,8 @@
 
 ;;; Commentary:
 
-;;
+;; This package provide the ability to use tab to jump out of delimiter pairs.
+;; Just `tab-jump-out-mode' and press TAB XD.
 
 ;;; Code:
 
